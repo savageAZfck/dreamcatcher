@@ -1,0 +1,20 @@
+[package]
+name = "dreamcatcher"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+authors = ["Adam Clark <savagetism@icloud.com>"]
+repository = "https://github.com/savageAZfck/dreamcatcher"
+homepage = "https://github.com/savageAZfck/dreamcatcher"
+license = "MIT"
+description = "Turn a verifiable interaction ledger into training data: pair queries with responses, filter control-plane text and refusals, dedupe, split train/valid, and gate adoption on held-out regression — the web that filters the night"
+keywords = ["lora", "training", "curation", "fine-tuning", "continual-learning"]
+categories = ["data-structures"]
+readme = "README.md"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[features]
+default = []
