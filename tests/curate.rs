@@ -3,9 +3,7 @@ use dreamcatcher::{chatml_row, curate, evaluate_adoption, validation_losses, Ado
 fn ledger(pairs: &[(&str, &str, Option<&str>)]) -> Vec<String> {
     let mut lines = Vec::new();
     for (q, a, tier) in pairs {
-        lines.push(format!(
-            r#"{{"type":"query","data":{{"prompt":"{q}"}}}}"#
-        ));
+        lines.push(format!(r#"{{"type":"query","data":{{"prompt":"{q}"}}}}"#));
         let tier_field = tier
             .map(|t| format!(r#","tier":"{t}""#))
             .unwrap_or_default();
@@ -29,10 +27,26 @@ fn pairs_query_with_next_response() {
 #[test]
 fn control_plane_tiers_are_filtered() {
     let l = ledger(&[
-        ("question one that is long enough", LONG_ANSWER, Some("approval")),
-        ("question two that is long enough", LONG_ANSWER, Some("deterministic")),
-        ("question three that is long enough", LONG_ANSWER, Some("gate_echo")),
-        ("question four that is long enough", LONG_ANSWER, Some("model")),
+        (
+            "question one that is long enough",
+            LONG_ANSWER,
+            Some("approval"),
+        ),
+        (
+            "question two that is long enough",
+            LONG_ANSWER,
+            Some("deterministic"),
+        ),
+        (
+            "question three that is long enough",
+            LONG_ANSWER,
+            Some("gate_echo"),
+        ),
+        (
+            "question four that is long enough",
+            LONG_ANSWER,
+            Some("model"),
+        ),
     ]);
     let c = curate(l.into_iter(), &Config::default());
     // Only q4 survives — training on gate echoes teaches the adapter
@@ -44,9 +58,17 @@ fn control_plane_tiers_are_filtered() {
 #[test]
 fn refusals_and_short_text_are_noise() {
     let l = ledger(&[
-        ("question one that is long enough", "I'm sorry, I can't do that.", None),
+        (
+            "question one that is long enough",
+            "I'm sorry, I can't do that.",
+            None,
+        ),
         ("question two that is long enough", "ok", None),
-        ("question three that is long enough", "[Output firewall: blocked]", None),
+        (
+            "question three that is long enough",
+            "[Output firewall: blocked]",
+            None,
+        ),
         ("question four that is long enough", LONG_ANSWER, None),
     ]);
     let c = curate(l.into_iter(), &Config::default());

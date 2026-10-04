@@ -20,12 +20,18 @@ fn main() {
     println!("  deduped:    {}", c.stats.deduped);
     println!("  train:      {} rows", c.stats.train);
     println!("  valid:      {} rows", c.stats.valid);
-    println!("\nfirst train row: {}", c.train.first().map(|s| s.as_str()).unwrap_or("-"));
+    println!(
+        "\nfirst train row: {}",
+        c.train.first().map(|s| s.as_str()).unwrap_or("-")
+    );
 
     // The trainer's report.
     let trainer_out = "Iter 1: validation loss 2.41\nIter 40: validation loss 1.93\nIter 80: validation loss 1.71";
     match evaluate_adoption(&validation_losses(trainer_out), 0.05) {
-        Adoption::Adopt { baseline, final_loss } => {
+        Adoption::Adopt {
+            baseline,
+            final_loss,
+        } => {
             println!("\nadoption: grafted (baseline {baseline:.2} → final {final_loss:.2})")
         }
         Adoption::Reject { reason } => println!("\nadoption: rejected — {reason}"),
